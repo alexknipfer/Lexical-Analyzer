@@ -7,10 +7,14 @@ using namespace std;
 class LexicalAnalyzer{
   public:
     void getFileName(ifstream &);
-    void initiateValidTokens();
     void scanFile(ifstream &);
+    void analyzeToken(vector<char>);
+    bool isFunction(string);
+    bool isWhiteSpace(char);
+    bool isSymbol(char);
+    bool isParenL(string);
+    bool isComma(string);
 
   private:
-    vector<string> tokenNames;
-    vector<string> tokenDescriptions;
+    vector<char> token;
 };
