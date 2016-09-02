@@ -9,10 +9,8 @@ using namespace std;
 int main(){
   LexicalAnalyzer lexicalAnalyzer;
   ifstream myFile;
-  string token;
 
   lexicalAnalyzer.getFileName(myFile);
-  //lexicalAnalyzer.initiateValidTokens();
   lexicalAnalyzer.scanFile(myFile);
 
   return 0;
@@ -37,42 +35,110 @@ void LexicalAnalyzer::getFileName(ifstream &myFile){
 }
 
 void LexicalAnalyzer::scanFile(ifstream &myFile){
+  string currentToken;
   string readLine;
-  getline(myFile, readLine);
+  char lookahead;
+
+    //continue to go through input file line by line
+  while(getline(myFile, readLine)){
+
+      //parse line to get tokens
+    for(int x = 0; x < readLine.length(); x++){
+      lookahead = readLine[x];
+      token.push_back(readLine[x]);
+
+        // analyze token since white space is read
+      if(isWhiteSpace(lookahead)){
+        token.pop_back();
+        analyzeToken(token);
+        token.clear();
+      }
+        //analyze token since symbol is read
+      else if(isSymbol(lookahead)){
+        token.pop_back();
+        analyzeToken(token);
+        token.clear();
+        token.push_back(lookahead);
+        analyzeToken(token);
+        token.clear();
+      }
+    }
+    break;
+  }
 }
 
-void LexicalAnalyzer::initiateValidTokens(){
-  tokenNames.push_back("ADDOP");
-  tokenNames.push_back("ADDOP");
-  tokenNames.push_back("AND");
-  tokenNames.push_back("ASSIGNOP");
-  tokenNames.push_back("COMMA");
-  tokenNames.push_back("CURLL");
-  tokenNames.push_back("CURLR");
-  tokenNames.push_back("ELSE");
-  tokenNames.push_back("FUNCTION");
-  tokenNames.push_back("ID");
-  tokenNames.push_back("IF");
-  tokenNames.push_back("MULOP");
-  tokenNames.push_back("MULOP");
-  tokenNames.push_back("NOT");
-  tokenNames.push_back("NUMBER");
-  tokenNames.push_back("OR");
-  tokenNames.push_back("PARENL");
-  tokenNames.push_back("PARENR");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RELOP");
-  tokenNames.push_back("RETURN");
-  tokenNames.push_back("SEMICOLON");
-  tokenNames.push_back("STRING");
-  tokenNames.push_back("VAR");
-  tokenNames.push_back("WHILE");
+  //returns true if argument is a whitespace
+bool LexicalAnalyzer::isWhiteSpace(char ch){
+  if(ch == ' ' || ch == '\n'){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 
-  for(int x = 0; x < tokenNames.size(); x++){
-    cout << tokenNames[x] << endl;
+  //returns true if argument is a symbol
+bool LexicalAnalyzer::isSymbol(char ch){
+  if(ch == '(' || ch == ')' || ch == ','){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a FUNCTION keyword
+bool LexicalAnalyzer::isFunction(string currentToken){
+  if(currentToken == "function"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a left parentesis
+bool LexicalAnalyzer::isParenL(string currentToken){
+  if(currentToken == "("){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a comma
+bool LexicalAnalyzer::isComma(string currentToken){
+  if(currentToken == ","){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //figures out token type of argument
+void LexicalAnalyzer::analyzeToken(vector<char> token){
+  string currentToken;
+  for(int x = 0; x < token.size(); x++){
+    currentToken += token[x];
+  }
+
+    //checks if token is a function keyword
+  if(isFunction(currentToken)){
+    cout << "TOKEN:FUNCTION          " << currentToken << endl;
+  }
+
+    //checks if token is a left parentesis
+  else if(isParenL(currentToken)){
+    cout << "TOKEN:PARENL            " << currentToken << endl;
+  }
+
+    //checks if token is a comma
+  else if(isComma(currentToken)){
+    cout << "TOKEN:COMMA             " << currentToken << endl;
+  }
+  else{
+    cout << "TOKEN:ID                " << currentToken << endl;
   }
 }
