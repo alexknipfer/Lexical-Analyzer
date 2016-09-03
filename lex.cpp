@@ -97,6 +97,15 @@ bool LexicalAnalyzer::isFunction(string currentToken){
   }
 }
 
+bool LexicalAnalyzer::isID(string currentToken){
+  if(isalpha(currentToken[0])){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a left parentesis
 bool LexicalAnalyzer::isParenL(string currentToken){
   if(currentToken == "("){
@@ -105,6 +114,16 @@ bool LexicalAnalyzer::isParenL(string currentToken){
   else{
     return false;
   }
+}
+
+//returns true if argument is a right parentesis
+bool LexicalAnalyzer::isParenR(string currentToken){
+if(currentToken == ")"){
+  return true;
+}
+else{
+  return false;
+}
 }
 
   //returns true if argument is a comma
@@ -134,11 +153,16 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     cout << "TOKEN:PARENL            " << currentToken << endl;
   }
 
+  else if(isParenR(currentToken)){
+    cout << "TOKEN:PARENR            " << currentToken << endl;
+  }
+
     //checks if token is a comma
   else if(isComma(currentToken)){
     cout << "TOKEN:COMMA             " << currentToken << endl;
   }
-  else{
+    //checks if token is a ID
+  else if(isID(currentToken)){
     cout << "TOKEN:ID                " << currentToken << endl;
   }
 }
