@@ -13,7 +13,9 @@ class LexicalAnalyzer{
     bool isWhiteSpace(char);
     bool isSymbol(char);
     bool isParenL(string);
+    bool isParenR(string);
     bool isComma(string);
+    bool isID(string);
 
   private:
     vector<char> token;
