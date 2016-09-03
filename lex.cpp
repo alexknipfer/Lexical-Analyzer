@@ -63,7 +63,6 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         token.clear();
       }
     }
-    break;
   }
 }
 
@@ -79,7 +78,7 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
 
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
-  if(ch == '(' || ch == ')' || ch == ','){
+  if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' || ch == '-'){
     return true;
   }
   else{
@@ -97,6 +96,7 @@ bool LexicalAnalyzer::isFunction(string currentToken){
   }
 }
 
+  //returns true if argument is a ID
 bool LexicalAnalyzer::isID(string currentToken){
   if(isalpha(currentToken[0])){
     return true;
@@ -118,12 +118,42 @@ bool LexicalAnalyzer::isParenL(string currentToken){
 
 //returns true if argument is a right parentesis
 bool LexicalAnalyzer::isParenR(string currentToken){
-if(currentToken == ")"){
-  return true;
+  if(currentToken == ")"){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
-else{
-  return false;
+
+  //returns true if argument is a left curly brace
+bool LexicalAnalyzer::isCurlL(string currentToken){
+  if(currentToken == "{"){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
+
+  //returns true if argument is a right curly brace
+bool LexicalAnalyzer::isCurlR(string currentToken){
+  if(currentToken == "}"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a ADDOP (+ or -)
+bool LexicalAnalyzer::isAddOp(string currentToken){
+  if(currentToken == "+" || currentToken == "-"){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
   //returns true if argument is a comma
@@ -160,6 +190,21 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     //checks if token is a comma
   else if(isComma(currentToken)){
     cout << "TOKEN:COMMA             " << currentToken << endl;
+  }
+
+    //checks if token is left curly
+  else if(isCurlL(currentToken)){
+    cout << "TOKEN:CURLL             " << currentToken << endl;
+  }
+
+    //checks if token is right curly
+  else if(isCurlR(currentToken)){
+    cout << "TOKEN:CURLR             " << currentToken << endl;
+  }
+
+    //checks if token is a ADDOP (+ or -)
+  else if(isAddOp(currentToken)){
+    cout << "TOKEN:ADDOP             " << currentToken << endl;
   }
     //checks if token is a ID
   else if(isID(currentToken)){

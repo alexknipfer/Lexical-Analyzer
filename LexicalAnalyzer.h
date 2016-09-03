@@ -14,6 +14,9 @@ class LexicalAnalyzer{
     bool isSymbol(char);
     bool isParenL(string);
     bool isParenR(string);
+    bool isCurlL(string);
+    bool isCurlR(string);
+    bool isAddOp(string);
     bool isComma(string);
     bool isID(string);
 
