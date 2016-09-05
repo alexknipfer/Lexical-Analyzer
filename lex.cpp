@@ -79,7 +79,7 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
   if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' ||
-     ch == '-' || ch == '*' || ch == '/' || ch == '&'){
+     ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '!'){
     return true;
   }
   else{
@@ -97,6 +97,16 @@ bool LexicalAnalyzer::isFunction(string currentToken){
   }
 }
 
+  //returns true if argument is a IF keyword
+bool LexicalAnalyzer::isIf(string currentToken){
+  if(currentToken == "if"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a TRUE keyword
 bool LexicalAnalyzer::isElse(string currentToken){
   if(currentToken == "else"){
@@ -107,9 +117,21 @@ bool LexicalAnalyzer::isElse(string currentToken){
   }
 }
 
+  //returns true if argument is a NOT symbol
+bool LexicalAnalyzer::isNot(string currentToken){
+  if(currentToken == "!"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a ID
 bool LexicalAnalyzer::isID(string currentToken){
-  if(isalpha(currentToken[0])){
+  if(isalpha(currentToken[0]) && currentToken != "if" && currentToken != "function" &&
+     currentToken != "else" && currentToken != "return" && currentToken != "var" &&
+     currentToken != "while"){
     return true;
   }
   else{
@@ -208,9 +230,19 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     cout << "TOKEN:FUNCTION          " << currentToken << endl;
   }
 
+    //checks if token is a if keyword
+  if(isIf(currentToken)){
+    cout << "TOKEN:IF                " << currentToken << endl;
+  }
+
     //checks if token is a else keyword
   if(isElse(currentToken)){
     cout << "TOKEN:ELSE              " << currentToken << endl;
+  }
+
+    //checks if token is a not symbol
+  if(isNot(currentToken)){
+    cout << "TOKEN:NOT               " << currentToken << endl;
   }
 
     //checks if token is a left parentesis

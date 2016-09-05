@@ -10,7 +10,9 @@ class LexicalAnalyzer{
     void scanFile(ifstream &);
     void analyzeToken(vector<char>);
     bool isFunction(string);
+    bool isIf(string);
     bool isElse(string);
+    bool isNot(string);
     bool isWhiteSpace(char);
     bool isSymbol(char);
     bool isParenL(string);
