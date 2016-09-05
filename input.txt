@@ -1,7 +1,4 @@
 function sillycrazykid(param1, paramB)
 {
-  else
-  if
-  print(param1+paramB);
-  return 42;
+  <-
 }

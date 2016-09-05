@@ -62,7 +62,27 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         analyzeToken(token);
         token.clear();
       }
+
+      else if(isAssignOp(lookahead)){
+        token.pop_back();
+        if(isAssignOp(readLine[x++])){
+          token.push_back(readLine[x++]);
+          x = x + 2;
+          analyzeToken(token);
+          token.clear();
+        }
+      }
+
     }
+  }
+}
+
+bool LexicalAnalyzer::isAssignOp(char ch){
+  if(ch == '<' || ch == '-'){
+    return true;
+  }
+  else{
+    return false;
   }
 }
 
@@ -79,7 +99,7 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
   if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' ||
-     ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '!'){
+     ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '!' || ch == '|'){
     return true;
   }
   else{
@@ -107,6 +127,16 @@ bool LexicalAnalyzer::isIf(string currentToken){
   }
 }
 
+  //returns true if argument is a OR symbol
+bool LexicalAnalyzer::isOr(string currentToken){
+  if(currentToken == "|"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a TRUE keyword
 bool LexicalAnalyzer::isElse(string currentToken){
   if(currentToken == "else"){
@@ -120,6 +150,36 @@ bool LexicalAnalyzer::isElse(string currentToken){
   //returns true if argument is a NOT symbol
 bool LexicalAnalyzer::isNot(string currentToken){
   if(currentToken == "!"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a RETURN keyword
+bool LexicalAnalyzer::isReturn(string currentToken){
+  if(currentToken == "return"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a VAR keyword
+bool LexicalAnalyzer::isVar(string currentToken){
+  if(currentToken == "var"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a WHILE keyword
+bool LexicalAnalyzer::isWhile(string currentToken){
+  if(currentToken == "while"){
     return true;
   }
   else{
@@ -179,6 +239,16 @@ bool LexicalAnalyzer::isCurlR(string currentToken){
   }
 }
 
+  //returns true if argument is a SEMICOLON
+bool LexicalAnalyzer::isSemicolon(string currentToken){
+  if(currentToken == ";"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a ADDOP (+ or -)
 bool LexicalAnalyzer::isAddOp(string currentToken){
   if(currentToken == "+" || currentToken == "-"){
@@ -218,6 +288,15 @@ bool LexicalAnalyzer::isAnd(string currentToken){
   }
 }
 
+bool LexicalAnalyzer::isAssignmentOperator(string currentToken){
+  if(currentToken == "<-"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //figures out token type of argument
 void LexicalAnalyzer::analyzeToken(vector<char> token){
   string currentToken;
@@ -230,19 +309,48 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     cout << "TOKEN:FUNCTION          " << currentToken << endl;
   }
 
+  else if(isAssignmentOperator(currentToken)){
+    cout << "TOKEN:ASSIGNOP          " << currentToken << endl;
+  }
+
     //checks if token is a if keyword
-  if(isIf(currentToken)){
+  else if(isIf(currentToken)){
     cout << "TOKEN:IF                " << currentToken << endl;
   }
 
     //checks if token is a else keyword
-  if(isElse(currentToken)){
+  else if(isElse(currentToken)){
     cout << "TOKEN:ELSE              " << currentToken << endl;
   }
 
+    //checks if token is a return keyword
+  else if(isReturn(currentToken)){
+    cout << "TOKEN:RETURN            " << currentToken << endl;
+  }
+
     //checks if token is a not symbol
-  if(isNot(currentToken)){
+  else if(isNot(currentToken)){
     cout << "TOKEN:NOT               " << currentToken << endl;
+  }
+
+    //checks if token is a or keyword
+  else if(isOr(currentToken)){
+    cout << "TOKEN:OR                " << currentToken << endl;
+  }
+
+    //checks if token is a VAR keyword
+  else if(isVar(currentToken)){
+    cout << "TOKEN:VAR               " << currentToken << endl;
+  }
+
+    //checks if token is a WHILE keyword
+  else if(isWhile(currentToken)){
+    cout << "TOKEN:WHILE             " << currentToken << endl;
+  }
+
+  //checks if token is a semicolon
+  else if(isSemicolon(currentToken)){
+    cout << "TOKEN:SEMICOLON         " << currentToken << endl;
   }
 
     //checks if token is a left parentesis
