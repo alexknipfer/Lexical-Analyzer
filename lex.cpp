@@ -78,7 +78,8 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
 
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
-  if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' || ch == '-'){
+  if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' ||
+     ch == '-' || ch == '*' || ch == '/' || ch == '&'){
     return true;
   }
   else{
@@ -89,6 +90,16 @@ bool LexicalAnalyzer::isSymbol(char ch){
   //returns true if argument is a FUNCTION keyword
 bool LexicalAnalyzer::isFunction(string currentToken){
   if(currentToken == "function"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a TRUE keyword
+bool LexicalAnalyzer::isElse(string currentToken){
+  if(currentToken == "else"){
     return true;
   }
   else{
@@ -156,9 +167,28 @@ bool LexicalAnalyzer::isAddOp(string currentToken){
   }
 }
 
+  //returns true if argument is a MULOP (/ or *)
+bool LexicalAnalyzer::isMulOp(string currentToken){
+  if(currentToken == "/" || currentToken == "*"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a comma
 bool LexicalAnalyzer::isComma(string currentToken){
   if(currentToken == ","){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+bool LexicalAnalyzer::isAnd(string currentToken){
+  if(currentToken == "&"){
     return true;
   }
   else{
@@ -176,6 +206,11 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     //checks if token is a function keyword
   if(isFunction(currentToken)){
     cout << "TOKEN:FUNCTION          " << currentToken << endl;
+  }
+
+    //checks if token is a else keyword
+  if(isElse(currentToken)){
+    cout << "TOKEN:ELSE              " << currentToken << endl;
   }
 
     //checks if token is a left parentesis
@@ -206,6 +241,17 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
   else if(isAddOp(currentToken)){
     cout << "TOKEN:ADDOP             " << currentToken << endl;
   }
+
+    //checks if token is a MULLOP (/ or *)
+  else if(isMulOp(currentToken)){
+    cout << "TOKEN:MULOP             " << currentToken << endl;
+  }
+
+    //checks if token is an AND
+  else if(isAnd(currentToken)){
+    cout << "TOKEN:AND               " << currentToken << endl;
+  }
+
     //checks if token is a ID
   else if(isID(currentToken)){
     cout << "TOKEN:ID                " << currentToken << endl;
