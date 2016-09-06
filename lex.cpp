@@ -66,7 +66,12 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       }
 
       else if(isdigit(lookahead) && !isalpha(readLine[x-1])){
-        cout << lookahead << endl;
+        //cout << lookahead << endl;
+        while(isdigit(readLine[x+1])){
+          token.push_back(readLine[x+1]);
+          x++;
+        }
+        cout << token.size() << endl;
       }
 
       else if(isAssignOp(lookahead)){
