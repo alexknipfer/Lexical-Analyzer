@@ -45,6 +45,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       //parse line to get tokens
     for(int x = 0; x < readLine.length(); x++){
       lookahead = readLine[x];
+
       token.push_back(readLine[x]);
 
         // analyze token since white space is read
@@ -53,6 +54,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         analyzeToken(token);
         token.clear();
       }
+
         //analyze token since symbol is read
       else if(isSymbol(lookahead)){
         token.pop_back();
@@ -65,11 +67,15 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
 
       else if(isAssignOp(lookahead)){
         token.pop_back();
-        if(isAssignOp(readLine[x++])){
-          token.push_back(readLine[x++]);
+        if(isAssignOp(readLine[x+1])){
+          token.push_back(lookahead);
+          token.push_back(readLine[x+1]);
           x = x + 2;
           analyzeToken(token);
           token.clear();
+        }
+        else{
+          cout << "TOKEN:ERROR               " << currentToken << endl;
         }
       }
 
@@ -99,7 +105,7 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
   if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' ||
-     ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '!' || ch == '|'){
+     ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '!' || ch == '|' || ch == ';'){
     return true;
   }
   else{
@@ -396,4 +402,5 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
   else if(isID(currentToken)){
     cout << "TOKEN:ID                " << currentToken << endl;
   }
+
 }

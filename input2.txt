@@ -1,0 +1,6 @@
+function silly(param1, paramB)
+{
+  print(param1+paramB);
+  return 42;
+  x <- hello;
+}
