@@ -34,17 +34,21 @@ void LexicalAnalyzer::getFileName(ifstream &myFile){
   }
 }
 
+//********************** scanFile **********************************************
+
 void LexicalAnalyzer::scanFile(ifstream &myFile){
   string currentToken;
   string readLine;
   char lookahead;
   string myNumber = "";
+  int tempX;
 
     //continue to go through input file line by line
   while(getline(myFile, readLine)){
-
       //parse line to get tokens
     for(int x = 0; x < readLine.length(); x++){
+      tempX = x;
+
       lookahead = readLine[x];
 
       token.push_back(readLine[x]);
@@ -83,6 +87,10 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         myNumber = "";
       }
 
+      else if(isComment(lookahead)){
+        break;
+      }
+
         //check to see if value read is a assignment operator (<-)
       else if(isAssignOp(lookahead)){
         token.pop_back();
@@ -93,6 +101,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           analyzeToken(token);
           token.clear();
         }
+
         else{
           cout << "TOKEN:ERROR               " << currentToken << endl;
         }
@@ -101,6 +110,8 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
     }
   }
 }
+
+//******************************************************************************
 
 bool LexicalAnalyzer::isAssignOp(char ch){
   if(ch == '<' || ch == '-'){
@@ -113,7 +124,7 @@ bool LexicalAnalyzer::isAssignOp(char ch){
 
   //returns true if argument is a whitespace
 bool LexicalAnalyzer::isWhiteSpace(char ch){
-  if(ch == ' ' || ch == '\n'){
+  if(ch == ' ' || ch == '\n' || ch == '\0'){
     return true;
   }
   else{
@@ -315,6 +326,15 @@ bool LexicalAnalyzer::isAnd(string currentToken){
 
 bool LexicalAnalyzer::isAssignmentOperator(string currentToken){
   if(currentToken == "<-"){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+bool LexicalAnalyzer::isComment(char ch){
+  if(ch == '#'){
     return true;
   }
   else{

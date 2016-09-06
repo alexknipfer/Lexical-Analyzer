@@ -31,6 +31,7 @@ class LexicalAnalyzer{
     bool isComma(string);
     bool isID(string);
     bool isAnd(string);
+    bool isComment(char);
 
   private:
     vector<char> token;
