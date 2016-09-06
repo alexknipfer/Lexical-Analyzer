@@ -38,6 +38,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
   string currentToken;
   string readLine;
   char lookahead;
+  string myNumber = "";
 
     //continue to go through input file line by line
   while(getline(myFile, readLine)){
@@ -65,15 +66,24 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         token.clear();
       }
 
+        //analyze number to see if it is a integer or a part of a string
+        //make sure it is a INTEGER
       else if(isdigit(lookahead) && !isalpha(readLine[x-1])){
-        //cout << lookahead << endl;
+          //keep getting integer values
         while(isdigit(readLine[x+1])){
           token.push_back(readLine[x+1]);
           x++;
         }
-        cout << token.size() << endl;
+          //add integer to string for printing
+        for(int y = 0; y < token.size(); y++){
+          myNumber += token[y];
+        }
+          //print token
+        cout << "TOKEN:NUMBER            " << myNumber << endl;
+        myNumber = "";
       }
 
+        //check to see if value read is a assignment operator (<-)
       else if(isAssignOp(lookahead)){
         token.pop_back();
         if(isAssignOp(readLine[x+1])){
