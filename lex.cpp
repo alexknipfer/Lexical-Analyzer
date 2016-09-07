@@ -41,6 +41,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
   string readLine;
   char lookahead;
   string myNumber = "";
+  string myString = "";
   int tempX;
 
     //continue to go through input file line by line
@@ -84,12 +85,29 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           //print token
         cout << "TOKEN:NUMBER            " << myNumber << endl;
         myNumber = "";
+        token.clear();
       }
 
         //if a comment is reached (#), exit loop and don't print line
       else if(isComment(lookahead)){
         token.clear();
         break;
+      }
+
+      else if(isString(lookahead)){
+        token.pop_back();
+        cout << "CURRENT " << lookahead << endl;
+        while(readLine[x+1] != '"'){
+          token.push_back(readLine[x+1]);
+          x++;
+        }
+        for(int y = 0; y < token.size(); y++){
+          myString += token[y];
+        }
+        x++;
+        cout << "TOKEN:STRING            " << myString << endl;
+        myString = "";
+        token.clear();
       }
 
         //check to see if value read in is a RELOP
@@ -102,13 +120,20 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           analyzeToken(token);
           token.clear();
         }
+        else if(isAssignOp(readLine[x+1])){
+          token.push_back(lookahead);
+          token.push_back(readLine[x+1]);
+          x = x + 2;
+          analyzeToken(token);
+          token.clear();
+        }
         else{
           cout << "TOKEN:ERROR             " << lookahead << endl;
         }
       }
 
         //check to see if value read is a assignment operator (<-)
-      else if(isAssignOp(lookahead)){
+      /*else if(isAssignOp(lookahead)){
         token.pop_back();
         if(isAssignOp(readLine[x+1])){
           token.push_back(lookahead);
@@ -121,7 +146,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         else{
           cout << "TOKEN:ERROR               " << currentToken << endl;
         }
-      }
+      }*/
 
     }
   }
@@ -148,6 +173,16 @@ bool LexicalAnalyzer::isWhiteSpace(char ch){
   }
 }
 
+  //returns true if argument is a STRING ("" quotes)
+bool LexicalAnalyzer::isString(char ch){
+  if(ch == '"'){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
   //returns true if argument is a symbol
 bool LexicalAnalyzer::isSymbol(char ch){
   if(ch == '(' || ch == ')' || ch == ',' || ch == '{' || ch == '}' || ch == '+' ||
@@ -164,6 +199,7 @@ bool LexicalAnalyzer::isRelop(char ch){
   if(ch == '=' || ch == '!' || ch == '<' || ch == '>'){
     return true;
   }
+
   else{
     return false;
   }

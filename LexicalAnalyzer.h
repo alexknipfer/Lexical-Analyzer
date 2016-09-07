@@ -34,6 +34,7 @@ class LexicalAnalyzer{
     bool isID(string);
     bool isAnd(string);
     bool isComment(char);
+    bool isString(char);
 
   private:
     vector<char> token;

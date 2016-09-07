@@ -1,1 +1,10 @@
-print("Hello, >= = cruel ! world??");
+function silly(param1, paramB)
+{
+  print(param1+paramB);
+  return 42;
+}
+
+print(65*uneasy-silly(2,x)/7);
+x <- x+1; # line is OKEE DOKEE
+print("Hello, cruel ! world??");
+yy=7;     #  note that = is an error.
