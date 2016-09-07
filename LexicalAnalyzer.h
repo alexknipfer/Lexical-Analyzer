@@ -21,6 +21,8 @@ class LexicalAnalyzer{
     bool isWhiteSpace(char);
     bool isSymbol(char);
     bool isAssignOp(char);
+    bool isRelop(char);
+    bool isRelopString(string);
     bool isAssignmentOperator(string);
     bool isParenL(string);
     bool isParenR(string);

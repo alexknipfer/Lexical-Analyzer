@@ -86,9 +86,25 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         myNumber = "";
       }
 
+        //if a comment is reached (#), exit loop and don't print line
       else if(isComment(lookahead)){
         token.clear();
         break;
+      }
+
+        //check to see if value read in is a RELOP
+      else if(isRelop(lookahead)){
+        token.pop_back();
+        if(isRelop(readLine[x+1])){
+          token.push_back(lookahead);
+          token.push_back(readLine[x+1]);
+          x = x + 2;
+          analyzeToken(token);
+          token.clear();
+        }
+        else{
+          cout << "TOKEN:ERROR             " << lookahead << endl;
+        }
       }
 
         //check to see if value read is a assignment operator (<-)
@@ -140,6 +156,27 @@ bool LexicalAnalyzer::isSymbol(char ch){
   }
   else{
     return false;
+  }
+}
+
+  //returns true if argument is a character of a RELOP
+bool LexicalAnalyzer::isRelop(char ch){
+  if(ch == '=' || ch == '!' || ch == '<' || ch == '>'){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+  //returns true if argument is a RELOP
+bool LexicalAnalyzer::isRelopString(string currentToken){
+  if(currentToken == "==" || currentToken == "!=" || currentToken == "<" ||
+          currentToken == ">" || currentToken == "<=" || currentToken == ">="){
+      return true;
+  }
+  else{
+      return false;
   }
 }
 
@@ -315,6 +352,7 @@ bool LexicalAnalyzer::isComma(string currentToken){
   }
 }
 
+  //returns true if argument is a AND symbol
 bool LexicalAnalyzer::isAnd(string currentToken){
   if(currentToken == "&"){
     return true;
@@ -324,6 +362,7 @@ bool LexicalAnalyzer::isAnd(string currentToken){
   }
 }
 
+  //returns true if argument is a ASSIGNMENT operator
 bool LexicalAnalyzer::isAssignmentOperator(string currentToken){
   if(currentToken == "<-"){
     return true;
@@ -333,6 +372,7 @@ bool LexicalAnalyzer::isAssignmentOperator(string currentToken){
   }
 }
 
+  //returns true if a argument is a COMMENT symbol (#)
 bool LexicalAnalyzer::isComment(char ch){
   if(ch == '#'){
     return true;
@@ -435,6 +475,11 @@ void LexicalAnalyzer::analyzeToken(vector<char> token){
     //checks if token is an AND
   else if(isAnd(currentToken)){
     cout << "TOKEN:AND               " << currentToken << endl;
+  }
+
+    //checks if token is a RELOP
+  else if(isRelopString(currentToken)){
+    cout << "TOKEN:RELOP             " << currentToken << endl;
   }
 
     //checks if token is a ID
