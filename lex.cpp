@@ -48,7 +48,6 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       //parse line to get tokens
     for(int x = 0; x < readLine.length(); x++){
       tempX = x;
-
       lookahead = readLine[x];
 
       token.push_back(readLine[x]);
@@ -88,6 +87,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       }
 
       else if(isComment(lookahead)){
+        token.clear();
         break;
       }
 

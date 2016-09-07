@@ -1,6 +1,0 @@
-function silly(param1, paramB)
-{
- function # hello function
-print
-hello
-}
