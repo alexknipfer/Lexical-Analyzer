@@ -128,7 +128,9 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           token.clear();
         }
         else{
+          analyzeToken(token);
           cout << "TOKEN:ERROR             " << lookahead << endl;
+          token.clear();
         }
       }
 
