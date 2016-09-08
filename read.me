@@ -1,5 +1,21 @@
 Name: Alex Knipfer
 Date: September 09, 2016
+OS: Mac OS X
+Editor: Atom 1.10.2
+
+Current Bugs:
+- Sometimes prints an ID on the same line as the previous ID
+(ex. helloAlex instead of Alex on a new line when their two separate tokens)
+
+How I approached the problem?
+Started by figuring out how I was going to determine when I need to analyze a
+token. Then I realized every time I hit a whitespace, symbol, etc., then what
+I previously read in is a token. I then had the idea of using vectors to store
+then tokens in rather than trying to unget() characters or what not. With a vector
+I can easily pop() them off and clear() the vector when I'm done analyzing it. Then
+when I'm ready to print the token I can easily convert the vector to a string to print.
+Overall, just had to test a lot because I realized I forgot different "checks" along
+the way.
 
 ********************************************************************
 
