@@ -16,11 +16,13 @@ int main(){
   return 0;
 }
 
+  //allows user to enter a file name to open
 void LexicalAnalyzer::getFileName(ifstream &myFile){
   string fileName;
 
   cout << "Enter file name: ";
 
+    //keep prompting until user has typed in a valid file name
   while(true){
     cin >> fileName;
     myFile.open(fileName);
@@ -36,6 +38,7 @@ void LexicalAnalyzer::getFileName(ifstream &myFile){
 
 //********************** scanFile **********************************************
 
+  //goes through file line by line to analyze tokens
 void LexicalAnalyzer::scanFile(ifstream &myFile){
   string currentToken;
   string readLine;
@@ -51,9 +54,10 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       tempX = x;
       lookahead = readLine[x];
 
+        //add character to vector to keep track of token
       token.push_back(readLine[x]);
 
-        // analyze token since white space is read
+        //analyze token since white space is read
       if(isWhiteSpace(lookahead)){
         token.pop_back();
         analyzeToken(token);
@@ -61,6 +65,8 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
       }
 
         //analyze token since symbol is read
+        //once a symbol is reached, pop the symbol off the vector because the
+        //previously a token was reached
       else if(isSymbol(lookahead)){
         token.pop_back();
         analyzeToken(token);
@@ -94,17 +100,24 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         break;
       }
 
+          //if a " is reached the current token is a string
+          //continue reading in string value
       else if(isString(lookahead)){
         token.pop_back();
         cout << "CURRENT " << lookahead << endl;
+
+          //keep reading until end of string
         while(readLine[x+1] != '"'){
           token.push_back(readLine[x+1]);
           x++;
         }
+
+          //add token (in vector) to string for printing
         for(int y = 0; y < token.size(); y++){
           myString += token[y];
         }
         x++;
+
         cout << "TOKEN:STRING            " << myString << endl;
         myString = "";
         token.clear();
@@ -113,6 +126,8 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         //check to see if value read in is a RELOP
       else if(isRelop(lookahead)){
         token.pop_back();
+
+          //check next character to see if it's a valid RELOP
         if(isRelop(readLine[x+1])){
           token.push_back(lookahead);
           token.push_back(readLine[x+1]);
@@ -120,36 +135,30 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           analyzeToken(token);
           token.clear();
         }
+
+          //check to see if next character creates an assignment operator
         else if(isAssignOp(readLine[x+1])){
           token.push_back(lookahead);
           token.push_back(readLine[x+1]);
-          x = x + 2;
+          x = x + 1;
           analyzeToken(token);
           token.clear();
         }
+
+        else if(lookahead == '<' || '>'){
+          token.push_back(lookahead);
+          analyzeToken(token);
+          x++;
+          token.clear();
+        }
+
+          //invalid token
         else{
           analyzeToken(token);
           cout << "TOKEN:ERROR             " << lookahead << endl;
           token.clear();
         }
       }
-
-        //check to see if value read is a assignment operator (<-)
-      /*else if(isAssignOp(lookahead)){
-        token.pop_back();
-        if(isAssignOp(readLine[x+1])){
-          token.push_back(lookahead);
-          token.push_back(readLine[x+1]);
-          x = x + 2;
-          analyzeToken(token);
-          token.clear();
-        }
-
-        else{
-          cout << "TOKEN:ERROR               " << currentToken << endl;
-        }
-      }*/
-
     }
   }
 }
