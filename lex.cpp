@@ -144,7 +144,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           token.clear();
         }
 
-        else if(lookahead == '<' || '>'){
+        else if(lookahead == '<' || lookahead == '>'){
           token.push_back(lookahead);
           analyzeToken(token);
           x++;

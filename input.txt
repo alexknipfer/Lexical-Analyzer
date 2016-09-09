@@ -7,4 +7,4 @@ function silly(param1, paramB)
 print(65*uneasy-silly(2,x)/7);
 x <- x+1; # line is OKEE DOKEE
 print("Hello, cruel ! world??");
-yy=7;     #  note that = is an error.
+yy=7;     #  = is an error.
