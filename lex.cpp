@@ -104,7 +104,6 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
           //continue reading in string value
       else if(isString(lookahead)){
         token.pop_back();
-        cout << "CURRENT " << lookahead << endl;
 
           //keep reading until end of string
         while(readLine[x+1] != '"'){
@@ -118,7 +117,7 @@ void LexicalAnalyzer::scanFile(ifstream &myFile){
         }
         x++;
 
-        cout << "TOKEN:STRING            " << myString << endl;
+        cout << "TOKEN:STRING            " << "\"" << myString << "\"" << endl;
         myString = "";
         token.clear();
       }
